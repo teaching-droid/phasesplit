@@ -8,6 +8,7 @@
 #include "dsp.h"
 #include "fx.h"
 #include "upmix.h"
+#include "version.h"
 #include "selftest.h"
 
 #include <math.h>
@@ -693,7 +694,7 @@ static void test_centre_bound(void) {
 
 int ps_selftest(void) {
     g_pass = g_fail = 0;
-    printf("phasesplit self test\n\n");
+    printf("phasesplit %s self test\n\n", PS_VERSION);
     printf("-- transform\n");
     test_fft(64); test_fft(512); test_fft(4096); test_fft(8192);
 

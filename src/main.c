@@ -10,6 +10,7 @@
 #include "dsp.h"
 #include "fx.h"
 #include "upmix.h"
+#include "version.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -17,7 +18,7 @@
 #include <time.h>
 
 static void usage(void) {
-    printf("phasesplit - spectral centre/side separation\n\n");
+    printf("phasesplit %s - spectral centre/side separation\n\n", PS_VERSION);
     printf("usage: phasesplit <input.wav> [options]\n\n");
     printf("  -c <file>        write the centre channel\n");
     printf("  -s <file>        write the side channels\n");
@@ -37,6 +38,7 @@ static void usage(void) {
     printf("      --sweep      measure the window/overlap trade-off and exit\n");
     printf("      --cpuinfo    show what this machine supports and exit\n");
     printf("      --copy <f>   write the input straight back out (file layer check)\n");
+    printf("  -v, --version    print the version and exit\n");
     printf("  -h, --help       this help\n\n");
     printf("The centre and the sides always sum back to the input, so nothing\n");
     printf("is invented and nothing is lost.\n\n");
@@ -168,6 +170,10 @@ static int surround_mode(int argc, char **argv, int *rc) {
 int main(int argc, char **argv) {
     if (argc < 2) { usage(); return 1; }
     if (!strcmp(argv[1], "-h") || !strcmp(argv[1], "--help")) { usage(); return 0; }
+    if (!strcmp(argv[1], "-v") || !strcmp(argv[1], "--version")) {
+        printf("phasesplit %s\n", PS_VERSION);
+        return 0;
+    }
     if (!strcmp(argv[1], "--selftest")) return ps_selftest();
     if (!strcmp(argv[1], "--sweep"))    return ps_sweep();
     if (!strcmp(argv[1], "--cpuinfo"))  { ps_cpu_report(); return 0; }
