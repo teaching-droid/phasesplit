@@ -436,9 +436,18 @@ static void test_simd_agreement(void) {
         }
         snprintf(label, sizeof(label), "%s agrees with scalar", ps_isa_name(paths[i]));
         snprintf(detail, sizeof(detail), "max difference %.2e", worst);
-        /* Not bit identical by requirement: fused multiply-add rounds once
-         * where scalar rounds twice. It does have to be inaudibly close. */
-        ok(label, worst < 1e-5, detail);
+        if (paths[i] == PS_ISA_SSE2) {
+            /* This one has to match exactly, not merely closely. SSE2 is the
+             * default precisely so the same input gives the same file on any
+             * machine, and a tolerance here would let that quietly lapse - as
+             * it does if the compiler is allowed to fuse multiply and add in
+             * the scalar code, which some do by default. */
+            ok(label, worst == 0.0, detail);
+        } else {
+            /* Not bit identical by requirement: fused multiply-add rounds once
+             * where scalar rounds twice. It does have to be inaudibly close. */
+            ok(label, worst < 1e-5, detail);
+        }
     }
 
     ps_cpu_force((ps_isa)-1);

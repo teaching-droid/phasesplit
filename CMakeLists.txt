@@ -28,11 +28,16 @@ target_include_directories(phasesplit PRIVATE src)
 if(MSVC)
     target_compile_options(phasesplit PRIVATE /W4 /WX /O2 /fp:fast)
 else()
-    target_compile_options(phasesplit PRIVATE -Wall -Wextra -Werror -O2)
-    # Reassociating floating point is fine for the spectral work and not fine
-    # for the filters, which feed their own output back in. fx.c asks for
-    # strict evaluation itself on MSVC; here the flag has to be given.
-    set_source_files_properties(src/fx.c PROPERTIES COMPILE_OPTIONS "-ffp-contract=off")
+    # -ffp-contract=off everywhere, and it is not optional.
+    #
+    # Clang fuses multiply and add by default. That rewrites the plain C code
+    # but not the hand written SSE2, so the two stop agreeing - measured at
+    # 6e-08, small but no longer bit identical. Since SSE2 is the default
+    # precisely so that any machine produces the same file, losing that would
+    # defeat the point. The self test checks for it rather than trusting this
+    # flag to be remembered. The filters need it for a second reason: they feed
+    # their own output back in, so reassociation compounds.
+    target_compile_options(phasesplit PRIVATE -Wall -Wextra -Werror -O2 -ffp-contract=off)
     find_library(M_LIB m)
     if(M_LIB)
         target_link_libraries(phasesplit PRIVATE ${M_LIB})

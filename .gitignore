@@ -1,5 +1,7 @@
 # build output
 build/
+build-*/
+out/
 work/
 *.obj
 *.o
