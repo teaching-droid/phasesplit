@@ -1,8 +1,13 @@
 # phasesplit
 
+[![build](https://github.com/teaching-droid/phasesplit/actions/workflows/build.yml/badge.svg)](https://github.com/teaching-droid/phasesplit/actions/workflows/build.yml)
+
 Splits a stereo file into the part that is common to both channels and the part
 that is not, and does the channel mixing and filtering that usually goes with
 it. Written in C with no dependencies beyond the standard library.
+
+Prebuilt binaries for Linux, macOS and Windows are on the
+[releases page](https://github.com/teaching-droid/phasesplit/releases).
 
 The two outputs always add back up to the input, sample for sample. The centre
 is estimated, and the sides are then taken as the remainder rather than
