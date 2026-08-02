@@ -34,7 +34,7 @@ jobs:
             asset: phasesplit-windows-x86_64
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: configure
         run: cmake -B build -DCMAKE_BUILD_TYPE=Release
@@ -62,7 +62,7 @@ jobs:
           Copy-Item LICENSE, README.md dist/${{ matrix.asset }}/
           Compress-Archive -Path dist/${{ matrix.asset }} -DestinationPath ${{ matrix.asset }}.zip
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
           name: ${{ matrix.asset }}
           path: |
@@ -74,11 +74,11 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0        # the notes are built from the history
 
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v5
         with:
           path: artifacts
           merge-multiple: true
