@@ -1,0 +1,5 @@
+# Keep the source normalised, whatever the checkout platform does.
+* text=auto eol=lf
+
+# Batch files have to keep CRLF or the shell mis-reads the last argument.
+*.bat text eol=crlf

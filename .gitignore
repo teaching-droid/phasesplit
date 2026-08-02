@@ -1,0 +1,35 @@
+# build output
+build/
+work/
+*.obj
+*.o
+*.exe
+*.pdb
+*.ilk
+*.lib
+*.exp
+*.a
+
+# cmake
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+*.cmake
+!CMakeLists.txt
+
+# editors
+.vs/
+.vscode/
+*.user
+*.swp
+*~
+
+# audio left behind by testing
+*.wav
+*.flac
+
+# local comparison harnesses: they point at fixed paths on one machine and at
+# tools that are not part of this project. The checks that matter are built
+# into the binary and run with --selftest.
+test/
