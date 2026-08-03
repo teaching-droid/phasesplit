@@ -105,6 +105,23 @@ jobs:
           produced this release.
           EOF
 
+      # The generated section is fetched rather than left to --generate-notes so
+      # the trailing "Full Changelog" link can be dropped. It only repeats the
+      # tag that is already on the page.
+      - name: add what changed since the last tag
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.event.inputs.tag || github.ref_name }}
+        run: |
+          gh api -X POST "repos/${GITHUB_REPOSITORY}/releases/generate-notes" \
+            -f tag_name="$TAG" --jq .body > generated.md || true
+          grep -v '^\*\*Full Changelog\*\*:' generated.md > generated.clean || true
+          if [ -s generated.clean ]; then
+            printf '\n' >> notes.md
+            cat generated.clean >> notes.md
+          fi
+          cat notes.md
+
       - name: publish
         env:
           GH_TOKEN: ${{ github.token }}
@@ -114,5 +131,4 @@ jobs:
           gh release create "$TAG" \
             --title "phasesplit $TAG" \
             --notes-file notes.md \
-            --generate-notes \
             artifacts/*
