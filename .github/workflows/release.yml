@@ -50,7 +50,8 @@ jobs:
         run: |
           mkdir -p dist/${{ matrix.asset }}
           cp build/phasesplit dist/${{ matrix.asset }}/
-          cp LICENSE README.md dist/${{ matrix.asset }}/
+          cp LICENSE dist/${{ matrix.asset }}/
+          cp packaging/README.txt dist/${{ matrix.asset }}/
           tar -C dist -czf ${{ matrix.asset }}.tar.gz ${{ matrix.asset }}
 
       - name: package (windows)
@@ -59,7 +60,8 @@ jobs:
         run: |
           New-Item -ItemType Directory -Force -Path dist/${{ matrix.asset }} | Out-Null
           Copy-Item build/Release/phasesplit.exe dist/${{ matrix.asset }}/
-          Copy-Item LICENSE, README.md dist/${{ matrix.asset }}/
+          Copy-Item LICENSE dist/${{ matrix.asset }}/
+          Copy-Item packaging/README.txt dist/${{ matrix.asset }}/
           Compress-Archive -Path dist/${{ matrix.asset }} -DestinationPath ${{ matrix.asset }}.zip
 
       - uses: actions/upload-artifact@v5
